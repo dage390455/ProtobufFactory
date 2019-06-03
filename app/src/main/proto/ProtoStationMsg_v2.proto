@@ -1,0 +1,44 @@
+syntax = "proto2";
+enum CmdRet{
+  CMD_RET_NONE          = 0;
+  CMD_RET_SUC           = 1;
+  CMD_RET_INVALID_CMD   = 2;
+  CMD_RET_INVALID_ARG   = 3;
+  CMD_RET_INVALID_STATE = 4;
+}
+
+enum NwkAccessMode{
+    NWK_MODE_ETH        = 0;
+    NWK_MODE_WIFI       = 1;
+    NWK_MODE_CELLULAR   = 2;
+}
+
+enum IPAllocationMode{
+    IP_ALLOC_DHCP        = 0;
+    IP_ALLOC_STATIC      = 1;
+}
+
+message StationMsg{
+    optional  CmdRet  ret           = 1;//命令返回
+    
+    optional string sn              = 2;//基站SN，只读
+    optional string netid           = 3;//LoRaWAN网络ID
+    optional string mcdomain        = 4;//LoRaWAN MACServer地址
+    optional string mcport          = 5;//LoRaWAN MACServer端口
+    optional string key             = 6;//基站与LoRaWAN MACServer通信加密密钥
+    
+    optional NwkAccessMode nwk_access_mode     = 7;//网络接入方式
+    optional IPAllocationMode ip_alloc = 8;//IP地址分配方式
+    optional string ip              = 9;//IP地址
+    optional string gateway         = 10;//网关地址
+    optional string mask            = 11;//子网掩码
+    optional string pdns            = 12;//主DNS
+    optional string adns            = 13;//从DNS
+    optional string ssid            = 14;//WiFi联网的SSID
+    optional string pwd             = 15;//WiFi联网的Password
+    optional string encrypt         = 16;//WiFi联网的加密方式
+    
+    optional uint32 self_test_code  = 17;//自检错误码
+    optional uint32 sgl_freq        = 18; //单通道基站频点
+    optional uint32 sgl_dr          = 19; //单通道基站DR    
+}

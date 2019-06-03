@@ -1,0 +1,425 @@
+syntax = "proto2";
+
+enum Activtion {
+    ABP = 0;
+    OTA = 1;
+}
+
+enum ClassType {
+    CLASS_A = 0;
+    CLASS_B = 1;
+    CLASS_C = 2;
+}
+
+message Channel {
+    required uint32 frequency = 1;
+    optional uint32 rx1Frequency = 2;
+}
+
+message LpwanParam {
+    optional bytes devEui = 1;
+    optional bytes appEui = 2;
+    optional bytes appKey = 3;
+    optional bytes appSkey = 4;
+    optional bytes nwkSkey = 5;
+    optional uint32 devAddr = 6;
+    optional uint32 datarate = 7;
+    optional sint32 txPower = 8;
+    optional uint32 adr = 9;
+    optional Activtion activition = 10;
+    optional ClassType classType = 11;
+    optional uint32 delay = 12;
+    repeated uint32 channelMask = 13;
+    optional uint32 maxEIRP = 14;
+    optional uint32 sglStatus = 15;
+    optional uint32 sglFrequency = 16;
+    optional uint32 sglDatarate = 17;
+    optional uint32 lbtStatus = 18;
+    optional sint32 lbtThreshold = 19;
+    repeated Channel channels = 20;
+}
+
+message BleParam {
+    optional float bleInterval = 1;
+    optional sint32 bleTxp = 2;
+    optional uint32 bleOnTime = 3;
+    optional uint32 bleOffTime = 4;
+    optional uint32 bleOnOff = 5;
+}
+
+enum SensorError {
+    SENSOR_ERR_NONE = 0;
+    SENSOR_ERR_NO_DATA = 1;
+    SENSOR_ERR_CRC = 2;
+    SENSOR_ERR_DATA = 3;
+    SENSOR_ERR_FAULT = 4;
+    SENSOR_ERR_ALARM = 5;
+    SENSOR_ERR_ALARM_HIGH = 6;
+    SENSOR_ERR_ALARM_LOW = 7;
+    SENSOR_ERR_UNKNOWN = 127;
+}
+
+enum SensorType {
+    SENSOR_TYPE_TEMP = 0;
+    SENSOR_TYPE_HUMI = 1;
+    SENSOR_TYPE_LIGHT = 2;
+    SENSOR_TYPE_GPS = 3;
+    SENSOR_TYPE_ANGLE = 4;
+    SENSOR_TYPE_PM2_5 = 5;
+    SENSOR_TYPE_PM10 = 6;
+    SENSOR_TYPE_LEAK = 7;
+    SENSOR_TYPE_CO = 8;
+    SENSOR_TYPE_CO2 = 9;
+    SENSOR_TYPE_NO2 = 10;
+    SENSOR_TYPE_CH4 = 11;
+    SENSOR_TYPE_LPG = 12;
+    SENSOR_TYPE_FLAME = 13;
+    SENSOR_TYPE_ARTIFICIAL_GAS = 14;
+    SENSOR_TYPE_WATER_GAGE = 15;
+    SENSOR_TYPE_TRACKER = 16;
+}
+
+enum SensorStatus {
+    SENSORO_STATUS_NONE = 0;
+    SENSORO_STATUS_SELF_INSPECTION = 1;
+    SENSORO_STATUS_ALARM = 2;
+}
+
+message SensorData {
+    optional SensorType type = 9;
+    optional float data = 1;
+    optional float alarmHigh = 2;
+    optional float alarmLow = 3;
+    optional uint32 calibration = 4;
+    optional SensorError error = 5;
+    optional uint32 status = 6;
+    optional float alarmStepHigh = 7;
+    optional float alarmStepLow = 8;
+}
+
+message SensorDataInt {
+    optional SensorType type = 1;
+    optional sint32 data = 2;
+    optional sint32 alarmHigh = 3;
+    optional sint32 alarmLow = 4;
+    optional sint32 calibration = 5;
+    optional SensorError error = 6;
+    optional uint32 status = 7;
+    optional sint32 alarmStepHigh = 8;
+    optional sint32 alarmStepLow = 9;
+}
+
+message SensorDataFloat{
+    optional SensorType type = 1;
+    optional float data = 2;
+    optional float alarmHigh = 3;
+    optional float alarmLow = 4;
+    optional sint32 calibration = 5;
+    optional SensorError error = 6;
+    optional uint32 status = 7;
+    optional float alarmStepHigh = 8;
+    optional float alarmStepLow = 9;
+}
+
+message MultiSensorData {
+    repeated float data = 1;
+    optional float alarmHigh = 2;
+    optional float alarmLow = 3;
+    optional uint32 calibration = 4;
+    optional SensorError error = 5;
+    optional uint32 status = 6;
+    optional float alarmStepHigh = 7;
+    optional float alarmStepLow = 8;
+}
+
+message MultiSensorDataInt {
+    repeated sint32 data = 1;
+    optional sint32 alarmHigh = 2;
+    optional sint32 alarmLow = 3;
+    optional uint32 calibration = 4;
+    optional SensorError error = 5;
+    optional uint32 status = 6;
+    optional sint32 alarmStepHigh = 7;
+    optional sint32 alarmStepLow = 8;
+}
+
+message GpsData {
+    optional double latitude = 1;
+    optional double longitude = 2;
+    optional double altitude = 3;
+}
+
+message AxisData {
+    optional float x = 1;
+    optional float y = 2;
+    optional float z = 3;
+}
+
+message iBeacon{
+    optional bytes uuid = 1;
+    optional uint32 major = 2;
+    optional uint32 minor = 3;
+    optional sint32 mrssi = 4;
+}
+
+enum AppCmd {
+    APP_CMD_NONE = 0;
+    APP_CMD_RESET = 1;
+    APP_CMD_FAC_RESET = 2;
+    APP_CMD_DFU = 3;
+}
+
+enum NodeState {
+    NODE_STATE_UNKNOWN = 0;
+    NODE_STATE_STATIC = 1;
+    NODE_STATE_MOVE = 2;
+}
+
+enum NodeAlarm {
+    NODE_ALARM_NONE = 0;
+    NODE_ALARM_STATIC = 1;
+    NODE_ALARM_MOVE = 2;
+    NODE_ALARM_COLLISION = 3;
+    NODE_ALARM_ROLL = 4;
+    NODE_ALARM_INVERTED = 5;
+    NODE_ALARM_FALL = 6;
+}
+
+enum SmokeCtrl {
+    SMOKE_CTRL_NONE = 0;
+    SMOKE_ERASURE = 1;
+    SMOKE_INSPECTION_TEST = 2;
+    SMOKE_INSPECTION_OVER = 3;
+    SMOKE_ERASURE_LONE = 4;
+}
+
+enum TrackerCtrl {
+    TRACKER_Ctrl = 0;
+    TRACKER_BOOT = 1;
+    TRACKER_SHUTDOWN = 2;
+    TRACKER_CALL_START = 3;
+    TRACKER_CALL_END = 4;
+    TRACKER_EMERGENCE_START = 5;
+    TRACKER_EMERGENCE_END = 6;
+}
+
+message ExtSmoke {
+    optional uint32 bgSignal = 1;
+    optional uint32 bgSignalThreshold = 2;
+    optional uint32 bgSignalCalibration = 3;
+}
+
+message AppParam {
+    optional AppCmd cmd = 1;
+    optional uint32 uploadInterval = 2;
+    optional uint32 syncTime = 3;
+    optional NodeState nodeState = 4;
+    optional NodeAlarm nodeAlarm = 5;
+    optional uint32 nodeAlarmSet = 6;
+    optional uint32 confirm = 7;
+    optional SmokeCtrl smokeCtrl = 8;
+    optional uint32 uploadRepeat = 9;
+    optional uint32 alarmUploadInterval = 10;
+    optional uint32 alarmUploadNb = 11;
+    optional TrackerCtrl trackerCtrl = 12;
+    optional uint32 trackerEmergencyTime = 13;
+    optional uint32 demoMode = 14;
+    optional uint32 lowBatteryBeep = 15;
+}
+
+message ElecFireData {
+    optional sint32 vol_val = 1;
+    optional uint32 curr_val = 2;
+    optional sint32 leakage_val = 3;
+    optional uint32 power_val = 4;
+    optional uint32 elec_energy_val = 5;
+    optional uint32 temp_val = 6;
+    optional uint32 status = 7;
+    optional uint32 alarm = 8;
+    optional uint32 error = 9;
+    optional uint32 sensorPwd = 10;
+    optional uint32 leakageTh = 11;
+    optional uint32 tempTh = 12;
+    optional uint32 currentTh = 13;
+    optional uint32 loadTh = 14;
+    optional uint32 volHighTh = 15;
+    optional uint32 volLowTh = 16;
+    optional uint32 cmd = 17;
+    optional uint32 autoSwitch = 18;
+
+}
+
+message MantunData {
+    optional uint32 volVal = 1;
+    optional uint32 leakageVal = 2;
+    optional uint32 powerVal = 3;
+    optional uint32 tempVal = 4;
+    optional uint32 currVal = 5;
+    optional uint32 status = 6;
+    optional uint32 kwhVal = 7;
+    optional uint32 swOnOff = 8;
+    optional uint32 volHighTh = 9;
+    optional uint32 volLowTh = 10;
+    optional uint32 leakageTh = 11;
+    optional uint32 tempTh = 12;
+    optional uint32 currentTh = 13;
+    optional uint32 powerTh = 14;
+    optional uint32 attribute = 15;
+    optional uint32 cmd = 16;
+    optional uint32 devError = 17;
+    optional uint32 version = 18;
+    optional uint32 id = 19;
+}
+
+message Cayman {
+    optional uint32 isSmoke = 1;
+    optional uint32 isMoved = 2;
+    optional sint32 valueOfTem = 3;
+    optional uint32 valueOfHum = 4;
+    optional uint32 valueOfSmoke = 5;
+    optional uint32 standarOfSmoke = 6;
+
+    optional sint32 alarmOfHighTem = 7;
+    optional sint32 alarmOfLowTem = 8;
+    optional uint32 alarmOfHighHum = 9;
+    optional uint32 alarmOfLowHum = 10;
+    optional uint32 cmd = 11;
+
+    optional uint32 valueOfphotor = 12;
+    optional uint32 devceState = 13;
+
+    optional uint32 bleAdvType = 14;
+    optional uint32 bleAdvStartTime = 15;
+    optional uint32 bleAdvEndTime = 16;
+
+    optional uint32 valueOfBatb = 17;
+    optional uint32 levelOfAlarm = 18;
+    optional uint32 isSelfCheck = 19;
+}
+
+message AcrelData {
+    optional uint32 channelType = 1;
+    optional uint32 shortCircuit = 2;
+    optional uint32 openCircuit = 3;
+    optional uint32 chStatus = 4;
+    optional sint32 leakageVal = 5;
+    optional sint32 t1Val = 6;
+    optional sint32 t2Val = 7;
+    optional sint32 t3Val = 8;
+    optional sint32 t4Val = 9;
+    optional uint32 connectSw = 10;
+    optional uint32 chEnable = 11;
+    optional uint32 leakageTh = 12;
+    optional uint32 t1Th = 13;
+    optional uint32 t2Th = 14;
+    optional uint32 t3Th = 15;
+    optional uint32 t4Th = 16;
+    optional uint32 passwd = 17;
+    optional uint32 aVal = 18;
+    optional uint32 bVal = 19;
+    optional uint32 cVal = 20;
+    optional uint32 valStatus = 21;
+    optional uint32 aCurr = 22;
+    optional uint32 bCurr = 23;
+    optional uint32 cCurr = 24;
+    optional uint32 currStatus = 25;
+    optional uint32 totalYg = 26;
+    optional uint32 totalWg = 27;
+    optional uint32 totalSz = 28;
+    optional uint32 totalFactor = 29;
+    optional uint32 valHighSet = 30;
+    optional uint32 valLowSet = 31;
+    optional uint32 currHighSet = 32;
+    optional uint32 energyKwh = 33;
+    optional uint32 cmd = 35;
+    optional uint32 devError = 36;
+    optional uint32 ct = 37;
+    optional uint32 outputSw = 38;
+    optional uint32 selfCheck = 39;
+    optional uint32 valHighType = 40;
+    optional uint32 valLowType = 41;
+    optional uint32 currHighType = 42;
+    optional uint32 ict = 43;
+    optional uint32 un = 44;
+    optional uint32 in = 45;
+    optional uint32 pt = 46;
+    optional uint32 lineMode = 47;
+    optional uint32 lineOrder = 48;
+    optional uint32 volFreq = 49;
+    optional uint32 leakageDelay = 50;
+    optional uint32 T1Delay = 51;
+    optional uint32 T2Delay = 52;
+    optional uint32 T3Delay = 53;
+    optional uint32 T4Delay = 54;
+    optional uint32 volHDelay = 55;
+    optional uint32 volLDelay = 56;
+    optional uint32 currDelay = 57;
+    optional uint32 buzzer = 58;
+
+
+}
+
+message Baymax {
+    optional uint32 gasDevClass = 1;
+    optional uint32 gasDensity = 2;
+    optional uint32 gasDensityL1 = 3;
+    optional uint32 gasDensityL2 = 4;
+    optional uint32 gasDensityL3 = 5;
+    optional uint32 gasDisassembly = 6;
+    optional uint32 gasLosePwr = 7;
+    optional uint32 gasEMValve = 8;
+    optional uint32 gasDeviceStatus = 9;
+    optional uint32 gasDeviceOpState = 10;
+    optional uint32 gasDeviceComsDown = 11;
+    optional uint32 gasDeviceCMD = 12;
+    optional uint32 gasDeviceSilentMode = 13;
+}
+
+message MsgNode {
+    optional uint32 id = 1;
+    optional uint32 cmd = 2;
+    optional uint32 cmdRet = 3;
+    optional LpwanParam lpwanParam = 4;
+    optional BleParam bleParam = 5;
+    optional AppParam appParam = 6;
+    optional sint32 battery = 7;
+    optional GpsData gps = 8;
+    optional AxisData acceleration = 9;
+    optional AxisData magnetism =10;
+    optional AxisData gyroscope =11;
+    optional SensorData temperature =12;
+    optional SensorData humidity =13;
+    optional SensorData light =14;
+    optional SensorData leak =15;
+    optional SensorData co =16;
+    optional SensorData co2 =17;
+    optional SensorData so2 =18;
+    optional SensorData no2 =19;
+    optional SensorData ch4 =20;
+    optional SensorData ch2o =21;
+    optional SensorData lpg =22;
+    optional SensorData o3 =23;
+    optional SensorData pm1 =24;
+    optional SensorData pm2_5 =25;
+    optional SensorData pm10 =26;
+    optional SensorData angle =27;
+    optional SensorData cover =28;
+    optional SensorData level =29;
+    optional SensorData smoke =30;
+    optional SensorData pitch =31;
+    optional SensorData roll =32;
+    optional SensorData yaw =33;
+    optional SensorDataInt flame =34;
+    optional SensorData artificialGas =35;
+    optional MultiSensorDataInt multiTemp =36;
+    optional SensorData waterPressure = 37;
+    optional iBeacon ibeacon = 38;
+    repeated SensorData sensors = 39;
+    optional bool installed = 40;
+    optional ExtSmoke extSmoke = 41;
+    optional ElecFireData fireData = 42;
+    repeated MantunData mtunData = 43;
+    optional AcrelData acrelData = 44;
+    optional Cayman caymanData = 45;
+    optional Baymax baymaxData = 46;
+}
